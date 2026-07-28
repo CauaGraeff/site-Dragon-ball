@@ -1,0 +1,60 @@
+* {
+    margin: 0px;
+
+}
+section {
+    display: grid;
+    grid-template-columns: 2.0fr 1fr; /* Duas colunas iguais */
+    height: 100vh;
+}
+
+.left {
+    background-color: orange;
+    color: blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-direction: column;
+}
+
+.right {
+    background-color: #2196F3;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+.container-selecao {
+    display: flex;
+    margin-bottom: 50px;
+    background-color: yellow;
+    padding: 40px 60px;
+    border-radius: 25px;
+}
+.selecao {
+    background-color: #2196F3;
+    padding: 15px 25px;
+    border-radius: 25px;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.container-dados {
+    background-color: yellow;
+    padding: 40px 60px;
+    border-radius: 25px;
+}
+
+.titulo-dados {
+    text-align: center;
+    color: black;
+    margin-bottom: 25px;
+}
+
+.dados {
+    margin: 10px auto;
+    text-align: left;
+
+}
