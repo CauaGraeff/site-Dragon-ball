@@ -1,6 +1,5 @@
 package Modelos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Titulo {
@@ -10,12 +9,17 @@ public class Titulo {
     private String race;
     private String image;
 
-    public String getImage() {
-        return image;
-    }
-
-    public String getMaxKi() {
-        return maxKi;
+    public Titulo(List<TituloRecord> records) {
+        if (records == null || records.isEmpty()) {
+            throw new IllegalArgumentException("Lista de registros não pode estar vazia");
+        }
+        
+        TituloRecord first = records.get(0);
+        this.nome = first.name();
+        this.ki = first.ki();
+        this.maxKi = first.maxKi();
+        this.race = first.race();
+        this.image = first.image();
     }
 
     public String getNome() {
@@ -26,33 +30,26 @@ public class Titulo {
         return ki;
     }
 
+    public String getMaxKi() {
+        return maxKi;
+    }
+
     public String getRace() {
         return race;
     }
 
+    public String getImage() {
+        return image;
+    }
+
     @Override
     public String toString() {
-        return "Titulo{" +
+        return "Character{" +
                 "nome='" + nome + '\'' +
                 ", ki='" + ki + '\'' +
                 ", maxKi='" + maxKi + '\'' +
                 ", race='" + race + '\'' +
+                ", image='" + image + '\'' +
                 '}';
-    }
-
-    public Titulo(List<TituloRecord> titulo) {
-        List<String> atributosSeparados = new ArrayList<>();
-        for(TituloRecord atributo : titulo) {
-            atributosSeparados.add(atributo.name());
-            atributosSeparados.add(atributo.ki());
-            atributosSeparados.add(atributo.maxKi());
-            atributosSeparados.add(atributo.race());
-            atributosSeparados.add(atributo.image());
-        }
-        this.nome = atributosSeparados.get(0);
-        this.ki = atributosSeparados.get(1);
-        this.maxKi = atributosSeparados.get(2);
-        this.race = atributosSeparados.get(3);
-        this.image = atributosSeparados.get(4);
     }
 }

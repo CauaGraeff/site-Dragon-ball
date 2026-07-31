@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Site Dragon Ball</title>
+</head>
+<body>
+<section>
+    <div class="left">
+        <div class="container-selecao">
+            <select class="selecao" id="characterSelect">
+                <option value="">-- Selecione um personagem --</option>
+                <option value="Goku">Goku</option>
+                <option value="Vegeta">Vegeta</option>
+                <option value="Piccolo">Piccolo</option>
+                <option value="Bulma">Bulma</option>
+                <option value="Freezer">Freezer</option>
+                <option value="Zarbon">Zarbon</option>
+                <option value="Dodoria">Dodoria</option>
+                <option value="Ginyu">Ginyu</option>
+                <option value="Celula">Celula</option>
+                <option value="Gohan">Gohan</option>
+                <option value="Krillin">Krillin</option>
+                <option value="Tenshinhan">Tenshinhan</option>
+                <option value="Yamcha">Yamcha</option>
+                <option value="Chi-Chi">Chi-Chi</option>
+                <option value="Gotenks">Gotenks</option>
+                <option value="Trunks">Trunks</option>
+                <option value="Master Roshi">Master Roshi</option>
+                <option value="Bardock">Bardock</option>
+                <option value="Launch">Launch</option>
+                <option value="Mr. Satan">Mr. Satan</option>
+                <option value="Dende">Dende</option>
+                <option value="Android 17">Android 17</option>
+                <option value="Android 16">Android 16</option>
+                <option value="Android 19">Android 19</option>
+                <option value="Android 20 (Dr. Gero)">Android 20 (Dr. Gero)</option>
+                <option value="Android 13">Android 13</option>
+                <option value="Android 14">Android 14</option>
+                <option value="Android 15">Android 15</option>
+                <option value="Nail">Nail</option>
+                <option value="Raditz">Raditz</option>
+                <option value="Babidi">Babidi</option>
+                <option value="Majin Buu">Majin Buu</option>
+                <option value="Bills">Bills</option>
+                <option value="Whis">Whis</option>
+                <option value="Zeno">Zeno</option>
+                <option value="Kibito-Shin">Kibito-Shin</option>
+                <option value="Jiren">Jiren</option>
+                <option value="Toppo">Toppo</option>
+                <option value="Dyspo">Dyspo</option>
+                <option value="Marcarita">Marcarita</option>
+                <option value="Vermoudh">Vermoudh</option>
+                <option value="Grand Priest">Grand Priest</option>
+                <option value="Kaio del norte (Kaito)">Kaio del norte (Kaito)</option>
+                <option value="Android 18">Android 18</option>
+                <option value="Gogeta">Gogeta</option>
+                <option value="Vegetto">Vegetto</option>
+                <option value="Janemba">Janemba</option>
+                <option value="Broly">Broly</option>
+                <option value="Kaio del Sur">Kaio del Sur</option>
+                <option value="Kaio del este">Kaio del este</option>
+                <option value="Kaio del Oeste">Kaio del Oeste</option>
+                <option value="Gran Kaio">Gran Kaio</option>
+                <option value="Kaio-shin del Este">Kaio-shin del Este</option>
+                <option value="Kaio-shin del Norte">Kaio-shin del Norte</option>
+                <option value="Kaio-shin del Sur">Kaio-shin del Sur</option>
+                <option value="Kaio-shin del Oeste">Kaio-shin del Oeste</option>
+                <option value="Gran Kaio-shin">Gran Kaio-shin</option>
+                <option value="Kibito">Kibito</option>
+            </select>
+        </div>
+        <div class="container-dados">
+            <h1 class="titulo-dados">Dados do personagem:</h1>
+            <div id="characterInfo" class="character-info">
+                <p class="dados"><span class="label">Nome:</span> <span id="nome">-</span></p>
+                <p class="dados"><span class="label">Ki:</span> <span id="ki">-</span></p>
+                <p class="dados"><span class="label">Max Ki:</span> <span id="maxKi">-</span></p>
+                <p class="dados"><span class="label">Raça:</span> <span id="race">-</span></p>
+            </div>
+            <div id="loadingMessage" class="loading-message" style="display:none;">Carregando...</div>
+            <div id="errorMessage" class="error-message" style="display:none;"></div>
+        </div>
+    </div>
+    <div class="right">
+        <img id="characterImage" alt="personagem" src="" class="character-image">
+    </div>
+</section>
+
+<script>
+    const select = document.getElementById('characterSelect');
+    const characterInfo = document.getElementById('characterInfo');
+    const loadingMessage = document.getElementById('loadingMessage');
+    const errorMessage = document.getElementById('errorMessage');
+    const characterImage = document.getElementById('characterImage');
+    
+    select.addEventListener('change', async function() {
+        const characterName = this.value;
+        
+        if (!characterName) {
+            characterInfo.style.display = 'block';
+            loadingMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            characterImage.src = '';
+            resetCharacterData();
+            return;
+        }
+        
+        try {
+            loadingMessage.style.display = 'block';
+            characterInfo.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            const response = await fetch(`/api/characters?name=${encodeURIComponent(characterName)}`);
+            
+            if (!response.ok) {
+                throw new Error('Personagem não encontrado');
+            }
+            
+            const data = await response.json();
+            
+            // Atualizar informações
+            document.getElementById('nome').textContent = data.nome || '-';
+            document.getElementById('ki').textContent = data.ki || '-';
+            document.getElementById('maxKi').textContent = data.maxKi || '-';
+            document.getElementById('race').textContent = data.race || '-';
+            
+            // Atualizar imagem
+            if (data.image) {
+                characterImage.src = data.image;
+            } else {
+                characterImage.src = '';
+            }
+            
+            characterInfo.style.display = 'block';
+            loadingMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+        } catch (error) {
+            console.error('Erro:', error);
+            loadingMessage.style.display = 'none';
+            characterInfo.style.display = 'none';
+            errorMessage.style.display = 'block';
+            errorMessage.textContent = '❌ ' + error.message;
+            characterImage.src = '';
+        }
+    });
+    
+    function resetCharacterData() {
+        document.getElementById('nome').textContent = '-';
+        document.getElementById('ki').textContent = '-';
+        document.getElementById('maxKi').textContent = '-';
+        document.getElementById('race').textContent = '-';
+    }
+</script>
+
+</body>
+</html>
